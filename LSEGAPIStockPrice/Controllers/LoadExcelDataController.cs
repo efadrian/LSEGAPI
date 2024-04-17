@@ -29,8 +29,7 @@ namespace LSEGAPIStockPrice.Controllers
         public async Task<IActionResult> GetDataPoints()
         {
             try
-            {
-               
+            {             
                 int totalLines;
                 List<StockModel> recordist = await _excelFile.GetDataFromCVSFile($"Data/LSE/FLTR.csv");
                 totalLines = recordist.Count;

@@ -7,16 +7,19 @@ namespace LSEGAPIStockPrice.Repository
     {
         public Task<List<StockModel>> CalculateStandardDeviationAsync(List<StockModel> stockDataList)
         {
+            // get list with stock prices
             var stockPrices = stockDataList.Select(data => data.StockPrice).ToList();
 
-            //  media
+            //  calculate media
             double media = stockPrices.Sum() / stockPrices.Count;
-            // 
+
+            // sum of squared difference between value and the media
             double TheSumOfSquareDifferences = stockPrices.Sum(value => Math.Pow(value - media, 2));
 
-            // mean differences
+            // average differences
             double TheSquareDifferences = TheSumOfSquareDifferences / stockPrices.Count;
-
+            
+            // get deviation
             double standardDeviation = Math.Sqrt(TheSquareDifferences);
             //
             List<StockModel> stockList = new List<StockModel>();
