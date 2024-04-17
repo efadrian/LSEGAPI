@@ -1,9 +1,6 @@
-﻿using CsvHelper.Configuration;
-using CsvHelper;
-using LSEGAPIStockPrice.Model;
+﻿using LSEGAPIStockPrice.Model;
 using Microsoft.AspNetCore.Mvc;
-using LSEGAPIStockPrice.Repository;
-using System;
+using LSEGAPIStockPrice.Interface;
 
 namespace LSEGAPIStockPrice.Controllers
 {
@@ -11,21 +8,31 @@ namespace LSEGAPIStockPrice.Controllers
     [Route("[controller]")]
     public class LoadExcelDataController : ControllerBase
     {
+        private readonly IProcessData _processData;
+        private readonly IReadExcelFile _excelFile;
 
         private readonly ILogger<LoadExcelDataController> _logger;
 
-        public LoadExcelDataController(ILogger<LoadExcelDataController> logger)
+        public LoadExcelDataController(
+            ILogger<LoadExcelDataController> logger, 
+            IProcessData processData,
+            IReadExcelFile excelFile)
         {
             _logger = logger;
+            _processData = processData;
+            _excelFile = excelFile;  
         }
+
+
 
         [HttpGet(Name = "GetDataPoints")]
         public async Task<IActionResult> GetDataPoints()
         {
             try
-            {            
+            {
+               
                 int totalLines;
-                List<StockModel> recordist = await ReadExcelFile.GetDataFromCVSFile($"Data/LSE/FLTR.csv");
+                List<StockModel> recordist = await _excelFile.GetDataFromCVSFile($"Data/LSE/FLTR.csv");
                 totalLines = recordist.Count;
 
                 if (recordist.Count == 0)
@@ -55,7 +62,7 @@ namespace LSEGAPIStockPrice.Controllers
                 return BadRequest("List of data points is empty!");
             }
 
-            var list = await ProcessData.CalculateStandardDeviationAsync(stockDataList);
+            var list = await _processData.CalculateStandardDeviationAsync(stockDataList);
             return Ok(list);
         }
     }

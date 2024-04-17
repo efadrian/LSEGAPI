@@ -1,11 +1,12 @@
-﻿using LSEGAPIStockPrice.Model;
+﻿using LSEGAPIStockPrice.Interface;
+using LSEGAPIStockPrice.Model;
 using System.Globalization;
 
 namespace LSEGAPIStockPrice.Repository
 {
-    public class ReadExcelFile
+    public class ReadExcelFile: IReadExcelFile
     {
-        public static Task<List<StockModel>> GetDataFromCVSFile(string filePath)
+        public Task<List<StockModel>> GetDataFromCVSFile(string filePath)
         {
             //totalLines = 0;
             var recordist = new List<StockModel>();

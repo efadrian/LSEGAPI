@@ -1,3 +1,6 @@
+using LSEGAPIStockPrice.Interface;
+using LSEGAPIStockPrice.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<IProcessData, ProcessData>(); // process data
+//
+builder.Services.AddSingleton<IReadExcelFile, ReadExcelFile>(); // read excel file
 
 var app = builder.Build();
 

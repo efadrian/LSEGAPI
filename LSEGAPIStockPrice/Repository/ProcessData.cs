@@ -1,10 +1,11 @@
-﻿using LSEGAPIStockPrice.Model;
+﻿using LSEGAPIStockPrice.Interface;
+using LSEGAPIStockPrice.Model;
 
 namespace LSEGAPIStockPrice.Repository
 {
-    public class ProcessData
+    public class ProcessData: IProcessData
     {
-        public static Task<List<StockModel>> CalculateStandardDeviationAsync(List<StockModel> stockDataList)
+        public Task<List<StockModel>> CalculateStandardDeviationAsync(List<StockModel> stockDataList)
         {
             var stockPrices = stockDataList.Select(data => data.StockPrice).ToList();
 
